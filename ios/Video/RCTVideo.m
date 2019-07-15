@@ -578,7 +578,6 @@ static int const RCTVideoUnset = -1;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-
   if([keyPath isEqualToString:readyForDisplayKeyPath] && [change objectForKey:NSKeyValueChangeNewKey] && self.onReadyForDisplay) {
     self.onReadyForDisplay(@{@"target": self.reactTag});
     return;
@@ -1264,14 +1263,25 @@ static int const RCTVideoUnset = -1;
       if(self.onVideoFullscreenPlayerWillPresent) {
         self.onVideoFullscreenPlayerWillPresent(@{@"target": self.reactTag});
       }
-      [viewController presentViewController:_playerViewController animated:true completion:^{
-        _playerViewController.showsPlaybackControls = YES;
-        _fullscreenPlayerPresented = fullscreen;
-        _playerViewController.autorotate = _fullscreenAutorotate;
-        if(self.onVideoFullscreenPlayerDidPresent) {
-          self.onVideoFullscreenPlayerDidPresent(@{@"target": self.reactTag});
-        }
-      }];
+      
+      if (_controls) {
+      
+        [_playerViewController removeFromParentViewController];
+        [_playerViewController goFullscreenWithCompletionHandler:^{
+          
+          _playerViewController.showsPlaybackControls = YES;
+          _playerViewController.autorotate = _fullscreenAutorotate;
+        }];
+      } else {
+        [viewController presentViewController:_playerViewController animated:true completion:^{
+          _playerViewController.showsPlaybackControls = YES;
+          _fullscreenPlayerPresented = fullscreen;
+          _playerViewController.autorotate = _fullscreenAutorotate;
+          if(self.onVideoFullscreenPlayerDidPresent) {
+            self.onVideoFullscreenPlayerDidPresent(@{@"target": self.reactTag});
+          }
+        }];
+      }
     }
   }
   else if ( !fullscreen && _fullscreenPlayerPresented )

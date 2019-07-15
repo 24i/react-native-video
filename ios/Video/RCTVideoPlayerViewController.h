@@ -9,6 +9,7 @@
 #import <AVKit/AVKit.h>
 #import "RCTVideo.h"
 #import "RCTVideoPlayerViewControllerDelegate.h"
+#import "AVPlayerViewController+Fullscreen.h"
 
 @interface RCTVideoPlayerViewController : AVPlayerViewController
 @property (nonatomic, weak) id<RCTVideoPlayerViewControllerDelegate> rctDelegate;

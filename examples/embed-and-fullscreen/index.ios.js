@@ -36,9 +36,33 @@ export default class VideoPlayer extends Component {
         source={require('./broadchurch.mp4')}
         style={{width: this.state.orientationWidth, height: this.state.orientationHeight }}
         controls={true}
+        onLoad={() => { console.log('log: onload'); } }
+
+        onFullscreenPlayerWillPresent={ this.videoPlayerWillPresent }
+        onFullscreenPlayerDidPresent={ this.videoPlayerDidPresent }
+        onFullscreenPlayerWillDismiss={ this.videoPlayerWillDismiss }
+        onFullscreenPlayerDidDismiss={ this.videoPlayerDidDismiss }
+
+        onEnd={() => { console.log('log: onEnd'); }}
       />
       <Button title="full screen" onPress={ this.onPress.bind(this) }></Button>
     </View>
+  }
+
+  videoPlayerWillPresent() {
+    console.log('log: will present');
+  }
+
+  videoPlayerDidPresent() {
+    console.log('log: did present');
+  }
+
+  videoPlayerWillDismiss() {
+    console.log('log: will dismiss');
+  }
+
+  videoPlayerDidDismiss() {
+    console.log('log: did dismiss');
   }
 
   onPress() {
