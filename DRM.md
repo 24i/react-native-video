@@ -37,10 +37,9 @@ Platforms: iOS
 With this prop you can override the license acquisition flow, as an example:
 
 ```js
-getLicense: (spcString) => {
-  const base64spc = Base64.encode(spcString);
+getLicense: ({ spcString, spcBase64 }, props) => {
   const formData = new FormData();
-  formData.append('spc', base64spc);
+  formData.append('spc', spcBase64);
   return fetch(`https://license.pallycon.com/ri/licenseManager.do`, {
       method: 'POST',
       headers: {
@@ -108,8 +107,7 @@ drm: {
 ```js
 drm: {
     type: DRMType.FAIRPLAY,
-    getLicense: (spcString) => {
-        const base64spc = Base64.encode(spcString);
+    getLicense: ({ spcString, spcBase64 }, props) => {
         return fetch('YOUR LICENSE SERVER HERE', {
             method: 'POST',
             headers: {
@@ -119,7 +117,7 @@ drm: {
             body: JSON.stringify({
                 getFairplayLicense: {
                     foo: 'bar',
-                    spcMessage: base64spc,
+                    spcMessage: spcBase64,
                 }
             })
         })

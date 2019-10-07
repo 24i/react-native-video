@@ -1735,7 +1735,8 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
                 if(self.onGetLicense) {
                   NSString *spcStr = [[NSString alloc] initWithData:spcData encoding:NSASCIIStringEncoding];
                   self->_requestingCertificate = YES;
-                  self.onGetLicense(@{@"spc": spcStr,
+                  self.onGetLicense(@{@"spcString": spcStr,
+                                      @"spcBase64": [spcData base64EncodedStringWithOptions:0],
                                       @"target": self.reactTag});
                 } else if(licenseServer != nil) {
                   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
