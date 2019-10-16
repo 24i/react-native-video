@@ -41,5 +41,5 @@ dependencies {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-    implementation project(':@24i/nxg-sdk-media-offline')
+    implementation project(':24i-nxg-sdk-media-offline')
 }
