@@ -703,9 +703,15 @@ static int const RCTVideoUnset = -1;
 
         if (!CGRectEqualToRect(oldRect, newRect)) {
           if (CGRectEqualToRect(newRect, [UIScreen mainScreen].bounds)) {
-            NSLog(@"in fullscreen");
-            if (!_fullscreenPlayerPresented && _controls) {
-              _fullscreenPlayerPresented = YES;
+            bool shouldFire = !_fullscreenPlayerPresented;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (shouldFire) {
+                  _fullscreenPlayerPresented = YES;
+                }
+            });
+
+            if (shouldFire) {
               if(self.onVideoFullscreenPlayerWillPresent) {
                 self.onVideoFullscreenPlayerWillPresent(@{@"target": self.reactTag});
               }
@@ -714,9 +720,15 @@ static int const RCTVideoUnset = -1;
               }
             }
           } else {
-            NSLog(@"not fullscreen");
-            if (_fullscreenPlayerPresented && _controls) {
-              _fullscreenPlayerPresented = NO;
+            bool shouldFire = _fullscreenPlayerPresented;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (shouldFire) {
+                  _fullscreenPlayerPresented = NO;
+                }
+            });
+
+            if (shouldFire) {
               if(self.onVideoFullscreenPlayerWillDismiss) {
                 self.onVideoFullscreenPlayerWillDismiss(@{@"target": self.reactTag});
               }
